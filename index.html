@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e9eff2">
+  <title>I2CE Design Innovation Workspace</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">I2</div>
+        <div><div class="brand-name">I2CE</div><div class="brand-product">Innovation workspace</div></div>
+        <button class="icon-button sidebar-close" id="sidebarClose" aria-label="Close navigation">x</button>
+      </div>
+
+      <div class="project-switcher">
+        <span class="eyebrow">Active project</span>
+        <button class="project-button" id="projectButton">
+          <span class="project-avatar">CP</span>
+          <span><strong id="projectShortName">Circular Packaging</strong><small id="projectProgram">Design innovation program</small></span>
+          <span class="chevron">v</span>
+        </button>
+      </div>
+
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="today"><span class="nav-icon">01</span><span>Today</span><span class="nav-count" id="todayNavCount">0</span></button>
+        <button class="nav-item" data-view="plan"><span class="nav-icon">02</span><span>Plan</span></button>
+        <button class="nav-item" data-view="notebook"><span class="nav-icon">03</span><span>Notebook</span><span class="nav-count" id="notebookNavCount">0</span></button>
+        <button class="nav-item" data-view="experiments"><span class="nav-icon">04</span><span>Experiments</span></button>
+        <button class="nav-item" data-view="phases"><span class="nav-icon">05</span><span>Phase reviews</span></button>
+        <button class="nav-item" data-view="knowledge"><span class="nav-icon">06</span><span>Project knowledge</span></button>
+      </nav>
+
+      <div class="sidebar-phase">
+        <div class="sidebar-label-row"><span class="eyebrow">Current phase</span><span id="sidebarPhaseNumber">03 / 12</span></div>
+        <div class="phase-progress"><span id="sidebarPhaseProgress"></span></div>
+        <strong id="sidebarPhaseTitle">Requirements and traceability</strong>
+        <small id="sidebarGateState">2 of 4 readiness checks met</small>
+        <button class="text-button" data-jump="phases">Open phase review <span>-></span></button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sync-indicator"><span></span> Demo · browser-only data</div>
+        <button class="text-button" id="resetDemo">Reset demo</button>
+      </div>
+    </aside>
+
+    <div class="page-column">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation">=</button>
+        <div class="breadcrumbs"><span>I2CE</span><span>/</span><strong id="breadcrumbView">Today</strong></div>
+        <div class="topbar-actions">
+          <label class="global-search"><span aria-hidden="true">/</span><input id="globalSearch" type="search" placeholder="Search work and evidence"></label>
+          <div class="member-chip"><span>PS</span><div><strong>Priya Shah</strong><small>Project member</small></div></div>
+          <button class="button primary" id="quickEntryAction">+ New entry</button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="view active" data-view-panel="today">
+          <div class="page-heading today-heading">
+            <div><span class="eyebrow">Saturday, June 20</span><h1>Good morning, Priya.</h1><p>Continue your assigned work. Every entry and run below is already connected to the project plan and phase evidence.</p></div>
+            <div class="heading-actions"><button class="button secondary" id="quickCaptureAction">Quick note</button><button class="button primary" id="startPriorityAction">Start priority work</button></div>
+          </div>
+          <div class="project-thread" id="projectThread"></div>
+          <div class="metric-grid" id="todayMetrics"></div>
+          <div class="today-grid">
+            <div class="today-main">
+              <article class="panel active-session-panel" id="activeSessionPanel"></article>
+              <article class="panel">
+                <div class="panel-heading"><div><span class="eyebrow">My work</span><h2>Assigned and due next</h2></div><button class="text-button" data-jump="plan">Open full plan -></button></div>
+                <div class="assignment-list" id="assignmentList"></div>
+              </article>
+              <article class="panel phase-path-panel">
+                <div class="panel-heading"><div><span class="eyebrow">Project path</span><h2>12-phase progress</h2></div><button class="text-button" data-jump="phases">Review phases -></button></div>
+                <div class="phase-path" id="phasePath"></div>
+              </article>
+            </div>
+            <aside class="today-rail">
+              <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Needs attention</span><h2>Reviews and blockers</h2></div></div><div class="attention-list" id="attentionList"></div></article>
+              <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Project activity</span><h2>Evidence trail</h2></div></div><div class="activity-list" id="activityList"></div></article>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" data-view-panel="plan">
+          <div class="page-heading"><div><span class="eyebrow">Connected project management</span><h1>Plan the work, then capture the proof.</h1><p>Each task opens a workspace containing its notebook, protocols, runs, requirements, materials, and evidence history.</p></div><button class="button primary" id="addTaskAction">+ Add work item</button></div>
+          <div class="toolbar panel compact-toolbar">
+            <div class="segmented" id="planStatusFilter"><button class="active" data-filter="all">All work</button><button data-filter="mine">My work</button><button data-filter="active">In progress</button><button data-filter="risk">At risk</button></div>
+            <div class="toolbar-right"><select id="planPhaseFilter" aria-label="Filter by phase"><option value="all">All phases</option></select><span class="toolbar-note">Select a row to open its complete workspace</span></div>
+          </div>
+          <article class="panel gantt-panel"><div class="gantt-summary" id="ganttSummary"></div><div class="gantt-scroll" id="ganttChart"></div></article>
+        </section>
+
+        <section class="view" data-view-panel="notebook">
+          <div class="page-heading"><div><span class="eyebrow">Research memory</span><h1>Notebook</h1><p>Structured documentation for plans, observations, results, decisions, and next actions. Entries retain their project context automatically.</p></div><button class="button primary" id="addNotebookEntry">+ New notebook entry</button></div>
+          <div class="toolbar panel compact-toolbar">
+            <div class="segmented" id="notebookStatusFilter"><button class="active" data-filter="all">All entries</button><button data-filter="Draft">Drafts</button><button data-filter="Signed">Signed</button><button data-filter="mine">My entries</button></div>
+            <div class="toolbar-right"><select id="notebookPhaseFilter" aria-label="Filter notebook by phase"><option value="all">All phases</option></select><select id="notebookModeFilter" aria-label="Filter evidence mode"><option value="all">Virtual + real</option><option value="virtual">Virtual</option><option value="real">Real</option><option value="combined">Combined</option></select></div>
+          </div>
+          <div class="notebook-layout">
+            <article class="panel notebook-list-panel"><div class="notebook-list" id="notebookList"></div></article>
+            <article class="panel notebook-preview" id="notebookPreview"></article>
+          </div>
+        </section>
+
+        <section class="view" data-view-panel="experiments">
+          <div class="page-heading"><div><span class="eyebrow">Virtual and real lab</span><h1>Experiments</h1><p>One versioned protocol can drive modeled and physical runs. Results flow back to the same task, requirement, notebook, and gate.</p></div><button class="button primary" id="addProtocolAction">+ New protocol</button></div>
+          <div class="metric-grid" id="experimentMetrics"></div>
+          <div class="experiment-layout"><div class="protocol-column" id="protocolList"></div><article class="panel protocol-detail" id="protocolDetail"></article></div>
+          <article class="panel runs-panel"><div class="panel-heading"><div><span class="eyebrow">Experiment history</span><h2>All runs</h2></div><span class="legend"><i class="virtual-dot"></i> Virtual <i class="real-dot"></i> Real</span></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Run</th><th>Experiment</th><th>Mode</th><th>Work item</th><th>Operator</th><th>Result</th><th>Status</th></tr></thead><tbody id="runsTableBody"></tbody></table></div></article>
+        </section>
+
+        <section class="view" data-view-panel="phases">
+          <div class="page-heading"><div><span class="eyebrow">Cradle-to-cradle control loop</span><h1>Phase reviews</h1><p>Readiness is calculated from completed work, signed notebook entries, linked requirements, and virtual/real evidence.</p></div><button class="button primary" id="recordGateDecision">Record gate decision</button></div>
+          <div class="phase-review-layout">
+            <aside class="phase-menu panel" id="phaseMenu"></aside>
+            <div class="phase-review-main"><article class="phase-hero panel" id="phaseHero"></article><div class="dual-evidence" id="phaseEvidence"></div><div class="phase-bottom-grid"><article class="panel" id="phaseWork"></article><article class="panel" id="gateReadiness"></article></div></div>
+          </div>
+        </section>
+
+        <section class="view" data-view-panel="knowledge">
+          <div class="page-heading"><div><span class="eyebrow">Project knowledge and engineering graph</span><h1>One source of project truth.</h1><p>References, market evidence, requirements, materials, decisions, and lifecycle records stay connected to the work that created them.</p></div><div class="heading-actions"><button class="button secondary" id="exportProject">Export project</button><button class="button primary" id="addKnowledgeAction">+ Add knowledge</button></div></div>
+          <div class="knowledge-stats" id="knowledgeStats"></div>
+          <article class="panel trace-panel"><div class="panel-heading"><div><span class="eyebrow">Engineering graph</span><h2>Need to circular outcome</h2></div><span class="badge neutral" id="traceCoverageBadge"></span></div><div class="trace-flow" id="traceFlow"></div></article>
+          <div class="knowledge-layout">
+            <article class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">Connected library</span><h2>Knowledge records</h2></div><div class="table-search"><input id="knowledgeSearch" type="search" placeholder="Filter records"><select id="knowledgeTypeFilter"><option value="all">All types</option></select></div></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Record</th><th>Type</th><th>Context</th><th>Used by</th><th>Owner</th><th>Status</th></tr></thead><tbody id="knowledgeTableBody"></tbody></table></div></article>
+            <aside class="knowledge-side"><article class="panel" id="requirementPanel"></article><article class="panel" id="materialPanel"></article></aside>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"><aside class="work-drawer" id="workDrawer" aria-label="Work item workspace"></aside></div>
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-heading"><div><span class="eyebrow" id="modalEyebrow">Workspace</span><h2 id="modalTitle">Add item</h2></div><button class="icon-button" id="modalClose" aria-label="Close">x</button></div><div id="modalBody"></div></section></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
