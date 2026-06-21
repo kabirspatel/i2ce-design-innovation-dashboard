@@ -31,7 +31,9 @@
         <button class="nav-item" data-view="notebook"><span class="nav-icon">03</span><span>Notebook</span><span class="nav-count" id="notebookNavCount">0</span></button>
         <button class="nav-item" data-view="experiments"><span class="nav-icon">04</span><span>Experiments</span></button>
         <button class="nav-item" data-view="phases"><span class="nav-icon">05</span><span>Phase reviews</span></button>
-        <button class="nav-item" data-view="knowledge"><span class="nav-icon">06</span><span>Project knowledge</span></button>
+        <button class="nav-item" data-view="research"><span class="nav-icon">06</span><span>Research intelligence</span><span class="nav-count" id="researchNavCount">0</span></button>
+        <button class="nav-item" data-view="map"><span class="nav-icon">07</span><span>Project map</span></button>
+        <button class="nav-item" data-view="knowledge"><span class="nav-icon">08</span><span>Project knowledge</span></button>
       </nav>
 
       <div class="sidebar-phase">
@@ -43,7 +45,7 @@
       </div>
 
       <div class="sidebar-footer">
-        <div class="sync-indicator"><span></span> Demo · browser-only data</div>
+        <div class="sync-indicator"><span></span> <span id="lakeStatusLabel">Data lake staging ready</span></div>
         <button class="text-button" id="resetDemo">Reset demo</button>
       </div>
     </aside>
@@ -101,6 +103,7 @@
             <div class="segmented" id="notebookStatusFilter"><button class="active" data-filter="all">All entries</button><button data-filter="Draft">Drafts</button><button data-filter="Signed">Signed</button><button data-filter="mine">My entries</button></div>
             <div class="toolbar-right"><select id="notebookPhaseFilter" aria-label="Filter notebook by phase"><option value="all">All phases</option></select><select id="notebookModeFilter" aria-label="Filter evidence mode"><option value="all">Virtual + real</option><option value="virtual">Virtual</option><option value="real">Real</option><option value="combined">Combined</option></select></div>
           </div>
+          <div class="intake-strip panel" id="notebookIntakeStrip"></div>
           <div class="notebook-layout">
             <article class="panel notebook-list-panel"><div class="notebook-list" id="notebookList"></div></article>
             <article class="panel notebook-preview" id="notebookPreview"></article>
@@ -118,12 +121,26 @@
           <div class="page-heading"><div><span class="eyebrow">Cradle-to-cradle control loop</span><h1>Phase reviews</h1><p>Readiness is calculated from completed work, signed notebook entries, linked requirements, and virtual/real evidence.</p></div><button class="button primary" id="recordGateDecision">Record gate decision</button></div>
           <div class="phase-review-layout">
             <aside class="phase-menu panel" id="phaseMenu"></aside>
-            <div class="phase-review-main"><article class="phase-hero panel" id="phaseHero"></article><div class="dual-evidence" id="phaseEvidence"></div><div class="phase-bottom-grid"><article class="panel" id="phaseWork"></article><article class="panel" id="gateReadiness"></article></div></div>
+            <div class="phase-review-main"><article class="phase-hero panel" id="phaseHero"></article><article class="panel phase-sections-panel"><div class="panel-heading"><div><span class="eyebrow">Structured capture</span><h2>Phase sections and generated tags</h2></div><span class="badge neutral">Select a section to create evidence</span></div><div class="phase-sections" id="phaseSections"></div></article><div class="dual-evidence" id="phaseEvidence"></div><div class="phase-bottom-grid"><article class="panel" id="phaseWork"></article><article class="panel" id="gateReadiness"></article></div></div>
           </div>
         </section>
 
+        <section class="view" data-view-panel="research">
+          <div class="page-heading"><div><span class="eyebrow">Evidence before decisions</span><h1>Research intelligence</h1><p>Capture literature and market evidence in comparable fields, then connect each finding to a phase, task, requirement, and notebook record.</p></div><button class="button primary" id="addResearchAction">+ Add research record</button></div>
+          <div class="research-tabs segmented" id="researchTabs"><button class="active" data-research-kind="literature">Literature review</button><button data-research-kind="market">Market analysis</button></div>
+          <div class="research-metrics" id="researchMetrics"></div>
+          <div class="research-layout"><article class="panel research-table-panel" id="researchTablePanel"></article><aside class="research-rail"><article class="panel" id="researchSynthesis"></article><article class="panel" id="researchCoverage"></article></aside></div>
+        </section>
+
+        <section class="view" data-view-panel="map">
+          <div class="page-heading"><div><span class="eyebrow">Visual project orientation</span><h1>See how every task moves the project.</h1><p>The navigation map translates the project graph into key images: scope flow, evidence composition, phase activity, and requirement coverage.</p></div><button class="button secondary" id="mapCurrentPhase">Focus current phase</button></div>
+          <article class="panel map-hero" id="projectNavigationMap"></article>
+          <div class="visual-grid" id="projectVisuals"></div>
+          <article class="panel map-task-list" id="mapTaskList"></article>
+        </section>
+
         <section class="view" data-view-panel="knowledge">
-          <div class="page-heading"><div><span class="eyebrow">Project knowledge and engineering graph</span><h1>One source of project truth.</h1><p>References, market evidence, requirements, materials, decisions, and lifecycle records stay connected to the work that created them.</p></div><div class="heading-actions"><button class="button secondary" id="exportProject">Export project</button><button class="button primary" id="addKnowledgeAction">+ Add knowledge</button></div></div>
+          <div class="page-heading"><div><span class="eyebrow">Project knowledge and engineering graph</span><h1>One source of project truth.</h1><p>References, requirements, materials, decisions, and lifecycle records stay connected to the work that created them.</p></div><div class="heading-actions"><button class="button secondary" id="exportLakePackage">Data lake package</button><button class="button secondary" id="exportProject">Project JSON</button><button class="button primary" id="addKnowledgeAction">+ Add knowledge</button></div></div>
           <div class="knowledge-stats" id="knowledgeStats"></div>
           <article class="panel trace-panel"><div class="panel-heading"><div><span class="eyebrow">Engineering graph</span><h2>Need to circular outcome</h2></div><span class="badge neutral" id="traceCoverageBadge"></span></div><div class="trace-flow" id="traceFlow"></div></article>
           <div class="knowledge-layout">
@@ -139,5 +156,6 @@
   <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-heading"><div><span class="eyebrow" id="modalEyebrow">Workspace</span><h2 id="modalTitle">Add item</h2></div><button class="icon-button" id="modalClose" aria-label="Close">x</button></div><div id="modalBody"></div></section></div>
   <div class="toast" id="toast" role="status"></div>
   <script src="app.js"></script>
+  <script src="enhancements.js"></script>
 </body>
 </html>
