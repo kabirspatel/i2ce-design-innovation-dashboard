@@ -4,6 +4,8 @@ A dependency-free project workspace for the twelve-phase I2CE Cradle-to-Cradle D
 
 The dashboard connects project work, structured notebook entries, literature and market research, versioned protocols, virtual and real experiment runs, requirements, materials, knowledge records, and phase-gate readiness through one shared browser data model.
 
+The Introduction landing page explains the operating workflow, positions this dashboard within the updated I2CE VIP portfolio, provides a strategic market-opportunity brief, and includes a presentation-ready six-slide pitch deck.
+
 Open `index.html` directly or serve the folder locally:
 
 ```sh
