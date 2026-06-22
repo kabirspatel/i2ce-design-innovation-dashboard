@@ -93,7 +93,7 @@ const DEFAULT_STATE = {
 };
 
 let state = loadState();
-let activeView = "today";
+let activeView = "intro";
 let selectedEntryId = state.notebookEntries[0]?.id || "";
 let selectedProtocolId = state.protocols[0]?.id || "";
 let selectedPhaseId = state.project.currentPhase;
@@ -164,7 +164,7 @@ function setView(view) {
   activeView = view;
   document.querySelectorAll("[data-view-panel]").forEach(panel => panel.classList.toggle("active", panel.dataset.viewPanel === view));
   document.querySelectorAll(".nav-item").forEach(item => item.classList.toggle("active", item.dataset.view === view));
-  el("breadcrumbView").textContent = ({ today: "Today", plan: "Plan", notebook: "Notebook", experiments: "Experiments", phases: "Phase reviews", knowledge: "Project knowledge" })[view] || view;
+  el("breadcrumbView").textContent = ({ intro: "Introduction", today: "Today", plan: "Plan", notebook: "Notebook", experiments: "Experiments", phases: "Phase reviews", knowledge: "Project knowledge" })[view] || view;
   el("sidebar").classList.remove("open");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
