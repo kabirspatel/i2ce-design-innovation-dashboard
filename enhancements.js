@@ -24,6 +24,16 @@ const DEFAULT_RESEARCH = [
 
 let researchKind = "literature";
 let pendingFiles = [];
+let pitchSlide = 0;
+
+const PITCH_SLIDES = [
+  { number: "01", kicker: "The challenge", title: "Circular product teams lose the thread between disciplines.", body: "Materials, geometry, manufacturing, environmental impact, field needs, and recovery decisions are often stored in separate tools and documents.", proof: "The result is slow iteration, weak traceability, and sustainability evidence arriving after key design choices." },
+  { number: "02", kicker: "The system", title: "GENX connects the full product lifecycle.", body: "The framework links advanced material innovation, parametric product design, use-phase analysis, and end-of-life systems through LCA, MBSE, simulation, and a shared digital thread.", proof: "One architecture can support increasingly complex circular applications." },
+  { number: "03", kicker: "Our responsibility", title: "This dashboard operates the Design Innovation Framework.", body: "It coordinates material research, requirements, market evidence, product design, simulation, prototype builds, manufacturing, testing, validation, and phase decisions.", proof: "Every task creates evidence that is reusable by the next phase." },
+  { number: "04", kicker: "Two proving grounds", title: "Circular packaging first; sustainable healthcare next.", body: "A biodegradable bio-based bottle provides a controlled circular product system. Portable diagnostics and biosensing then test the same framework against sterility, electronics, connectivity, portability, and medical-waste constraints.", proof: "The use cases change. The evidence architecture remains consistent." },
+  { number: "05", kicker: "How it works", title: "Plan → document → compare → decide.", body: "Members start from assigned work, capture structured notebook records and files, run virtual and real experiments from one protocol, and review requirements and evidence at phase gates.", proof: "No evidence object is detached from its project role." },
+  { number: "06", kicker: "The outcome", title: "A scalable circular product innovation system.", body: "Students, mentors, communities, and industry partners can explore design spaces, make lifecycle-informed tradeoffs, and preserve an auditable research memory across the full product lifecycle.", proof: "Better decisions earlier, clearer collaboration, and reusable learning across projects." }
+];
 
 function asTags(value) {
   return Array.isArray(value) ? value.filter(Boolean) : String(value || "").split(",").map(tag => tag.trim()).filter(Boolean);
@@ -108,7 +118,20 @@ renderAll = function() {
   renderEnhancementChrome();
   renderResearch();
   renderProjectMap();
+  renderPitchDeck();
 };
+
+function renderPitchDeck() {
+  const slide = PITCH_SLIDES[pitchSlide];
+  el("pitchDeckContent").innerHTML = `<div class="pitch-slide"><div class="pitch-slide-number">${slide.number}</div><div class="pitch-slide-copy"><span class="eyebrow">${escapeHtml(slide.kicker)}</span><h3>${escapeHtml(slide.title)}</h3><p>${escapeHtml(slide.body)}</p><footer>${escapeHtml(slide.proof)}</footer></div></div>`;
+  el("pitchDots").innerHTML = PITCH_SLIDES.map((item, index) => `<button class="${index === pitchSlide ? "active" : ""}" data-pitch-dot="${index}" aria-label="Open pitch slide ${index + 1}">${item.number}</button>`).join("");
+  el("pitchCounter").textContent = `${String(pitchSlide + 1).padStart(2, "0")} / ${String(PITCH_SLIDES.length).padStart(2, "0")}`;
+}
+
+function movePitch(direction) {
+  pitchSlide = (pitchSlide + direction + PITCH_SLIDES.length) % PITCH_SLIDES.length;
+  renderPitchDeck();
+}
 
 function renderEnhancementChrome() {
   el("researchNavCount").textContent = state.research.length;
@@ -238,6 +261,10 @@ document.addEventListener("click", event => {
   const tab = event.target.closest("[data-research-kind]"); if (tab) { researchKind = tab.dataset.researchKind; renderResearch(); }
   const research = event.target.closest("[data-edit-research]"); if (research) openResearchModal(state.research.find(item => item.id === research.dataset.editResearch));
   const section = event.target.closest("[data-create-section]"); if (section) openEntryModal(null, { phaseId: section.dataset.phase, phaseSection: section.dataset.createSection, type: "Analysis" });
+  if (event.target.closest("[data-pitch-prev]")) movePitch(-1);
+  if (event.target.closest("[data-pitch-next]")) movePitch(1);
+  const pitchDot = event.target.closest("[data-pitch-dot]"); if (pitchDot) { pitchSlide = Number(pitchDot.dataset.pitchDot); renderPitchDeck(); }
+  if (event.target.closest("[data-open-market-research]")) { researchKind = "market"; setView("research"); renderResearch(); }
 });
 el("addResearchAction").onclick = () => openResearchModal(null, { kind: researchKind });
 el("exportLakePackage").onclick = exportLakePackage;
